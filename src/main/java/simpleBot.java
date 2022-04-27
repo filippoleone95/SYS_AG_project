@@ -18,7 +18,6 @@ public class simpleBot extends TelegramLongPollingBot {
             SendMessage response = new SendMessage();
             response.setChatId(update.getMessage().getChatId().toString());
             response.setText(message);
-
             try{
                 execute(response);
             }catch (TelegramApiException E)
