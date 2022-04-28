@@ -1,16 +1,20 @@
 package telegramBot;
 
+import connessioneDatabase.ConnessioneDB;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import prenotazione.Prenotazione;
 
 import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.TreeSet;
 
-public class simpleBot extends TelegramLongPollingBot {
+public class SimpleBot extends TelegramLongPollingBot {
 
+    TreeSet<Prenotazione> listaPrenotazioni = new TreeSet<Prenotazione>();
     Connection conn ;
 
     //@Override
@@ -39,11 +43,35 @@ public class simpleBot extends TelegramLongPollingBot {
             }
         }
 
-        if(command.equals("/prenota"))
+        if(command.equals("/prenota")) {
+            try {
+                Connection conn = ConnessioneDB.connectToDB();
+                if(conn != null) {
+                    listaPrenotazioni = ConnessioneDB.LoadPrenotazioni(conn);
+                }
+            } catch (Exception ex) {
+                System.out.println("telegramBot.SimpleBot.onUpdateReceived - Eccezione : " + ex.toString());
+            }
+
+            for (Prenotazione prenotazione: listaPrenotazioni ) {
+                String name = update.getMessage().getFrom().getFirstName();
+                if(prenotazione.getNome().equals(name)) {
+                    String message = prenotazione.toString();
+                    SendMessage response = new SendMessage();
+                    response.setChatId(update.getMessage().getChatId().toString());
+                    response.setText(message);
+                    try{
+                        execute(response);
+                    } catch (TelegramApiException E) {
+                        E.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        if(command.equals("/prenota_prova"))
         {
-
-
-            String message = "Inserisci orario";
+            String message = "Inserisci corso";
             SendMessage response = new SendMessage();
             response.setChatId(update.getMessage().getChatId().toString());
             response.setText(message);
