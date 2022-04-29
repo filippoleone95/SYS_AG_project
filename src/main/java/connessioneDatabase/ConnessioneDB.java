@@ -19,9 +19,9 @@ public class ConnessioneDB {
     // nome utente per acccedere al database;
     static private String user = "root";
     // password utente per acccedere al database;
-    static private String password = "root";
+    static private String password = "123ITAde";
     // nome del database a cui ci si deve collegare;
-    static private String dbName = "JADEPROVA";
+    static private String dbName = "jadeprova";
     // nome dell'host a cui ci si collega ( di solito "localhost" è uguale per tutti)
     static private String host = "localhost";
     // numero della porta (di solito 2206 è uguale per tutti)
@@ -42,7 +42,7 @@ public class ConnessioneDB {
             conn = DriverManager.getConnection(url, user, password);
 
         } catch(Exception e) {
-            System.out.println("database.LoadDB.connectToDB - Eccezione : " + e.toString());
+            System.out.println("database.LoadDB.connectToDB - Eccezione connessione DB: " + e.toString());
         }
 
         return conn;

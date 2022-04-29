@@ -15,6 +15,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import prenotazione.Prenotazione;
 
+
 @SuppressWarnings("serial")
 public class Cliente extends Agent {
 
